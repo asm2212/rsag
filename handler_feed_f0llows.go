@@ -1,0 +1,37 @@
+package main
+
+import (
+	"encoding/json"
+	"net/http"
+	"time"
+
+	"github.com/asm2212/rsag/internal/database"
+	"github.com/google/uuid"
+)
+
+func (apiCfg *apiConfig) handlerCreateFeedFollow(w http.ResponseWriter, r *http.Request, user *database.User) {
+	type parameters struct {
+		FeedID uuid.UUID `json:"feed_id"`
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	params := parameters{}
+	err := decoder.Decode(&params)
+	if err != nil {
+		respondWithError(w, 400, "error parsing json: "+err.Error())
+		return
+	}
+	feedFollow, err := apiCfg.DB.CreateFeedFollow(r.Context(), database.CreateFeedFollowParams{
+		ID:        uuid.New(),
+		FeedID:    params.FeedID,
+		UserID:    user.ID,
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
+	})
+	if err != nil {
+		respondWithError(w, 400, "could not create feed follow: "+err.Error())
+		return
+	}
+	respondWithJSON(w, 201, databaseFeedFollowToFeedFollow(feedFollow))
+
+}

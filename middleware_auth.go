@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/asm2212/rsag/internal/auth"
 	"github.com/asm2212/rsag/internal/database"
-	"github.com/asm2212/rsag/internal/handlers"
 	"net/http"
 )
 

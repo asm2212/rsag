@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/asm2212/rsag/internal/database"
 	"github.com/go-chi/chi/v5"
@@ -20,6 +21,12 @@ type apiConfig struct {
 }
 
 func main() {
+	// feed, err := urlToFeed("https://wagslane.dev/index.xml")
+	// if err != nil {
+	// 	log.Fatal("Error fetching RSS feed:", err)
+	// }
+	// log.Println("Fetched RSS feed successfully:", feed.Channel.Title)
+	// fmt.Println(feed)
 
 	godotenv.Load(".env")
 
@@ -37,9 +44,16 @@ func main() {
 		log.Fatal("Can't connect to database", err)
 	}
 
+	db := database.New(conn)
+
 	apiCfg := apiConfig{
-		DB: database.New(conn),
+		DB: db,
 	}
+	// Start scraping in a separate goroutine
+	go startScraping(
+		db,
+		10, // concurrency
+		time.Minute)
 
 	router := chi.NewRouter()
 

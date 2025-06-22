@@ -1,6 +1,6 @@
 # RSAG - RSS Aggregator API
 
-**RSAG** is a production-ready backend API service written in Go for aggregating RSS feeds, managing users, and delivering feed content. RSAG is designed for scalability, security, and extensibility—making it ideal for building custom RSS readers, content aggregators, or for powering backend services requiring fresh feed data.
+**RSAG** is a backend API service written in Go for aggregating RSS feeds, managing users, and delivering feed content. RSAG is designed for scalability, security, and extensibility—making it ideal for building custom RSS readers, content aggregators, or for powering backend services requiring fresh feed data.
 
 ---
 
